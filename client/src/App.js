@@ -1,19 +1,17 @@
-import { Button } from "flowbite-react";
+import { BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router";
+import Layout from "./layouts/Layout/layout";
 
 function App() {
 
-  async function apiCall() {
-    try {
-      const response = await fetch('http://localhost:8000/api');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
-    <Button color='success' onClick={() => apiCall()}>Click me</Button>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
