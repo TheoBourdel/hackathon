@@ -1,9 +1,21 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      }
-    });
-    return User;
-  };
+'use strict';
+import { Model, DataTypes } from 'sequelize';
+import {sequelize} from '../../config/database.js'; 
+
+class User extends Model {
+  static associate(models) {
+    // define association here if needed
+  }
+}
+
+User.init({
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
+}, {
+  sequelize,
+  modelName: 'User',
+});
+
+export default User;

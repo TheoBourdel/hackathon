@@ -1,7 +1,5 @@
-'use strict';
-
 import { Sequelize } from 'sequelize';
-import config from './config/config.js';
+import config from './conn.js';
 
 const sequelize = new Sequelize(config.development);
 

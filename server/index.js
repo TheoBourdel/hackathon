@@ -1,26 +1,43 @@
 import express from 'express';
 import cors from 'cors';
-// import { connectDatabase } from './src/db/conn.js';
-import { connectDatabase } from './src/db/conn.js';
+import { connectDatabase } from './config/database.js';
+import userRoutes from './src/routes/userRoute.js';
+import messageRoutes from './src/routes/messageRoute.js';
+import http from 'http';
+import { socketHandler } from './src/ws/socket.js';
+import { Server } from 'socket.io';
 
 const app = express();
 const port = 8000;
 
 app.use(cors());
+app.use(express.json()); // Pour parser les requêtes JSON
 
 app.get('/api', (req, res) => {
   res.send({ data: 'Hello from the server!' });
 });
 
+app.use('/api', userRoutes);
+app.use('/api', messageRoutes);
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+socketHandler(io);
+
 const startServer = async () => {
   try {
-    // Connect to the database
     await connectDatabase();
     console.log('Database connected successfully.');
 
-    // Start the server
-    app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`);
+    // Utilisation de `server.listen` au lieu de `app.listen`
+    server.listen(port, () => {
+      console.log(`Server is listening on port ${port}`);
     });
   } catch (error) {
     console.error('Unable to start the server:', error);

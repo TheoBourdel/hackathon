@@ -1,0 +1,18 @@
+const ROOM = 'global_room';
+
+export const socketHandler = (io) => {
+  io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    socket.join(ROOM);
+
+    socket.on('message', (message) => {
+      console.log(message);
+      io.to(ROOM).emit('message', message);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('A user disconnected');
+    });
+  });
+};

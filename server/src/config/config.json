@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "esgi",
+    "database": "hackathon",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "root",
+    "password": "esgi",
+    "database": "hackathon",
+    "host": "db",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": "esgi",
+    "database": "hackathon",
+    "host": "db",
+    "dialect": "postgres"
+  }
+}
