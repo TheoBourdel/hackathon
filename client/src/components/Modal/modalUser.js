@@ -8,14 +8,14 @@ const UserModal = ({ isOpen, onRequestClose, setUserType }) => {
   };
 
   return (
-    <Modal show={isOpen} onClose={onRequestClose}>
+    <Modal show={isOpen} onClose={onRequestClose}  size="md">
       <Modal.Header>
-        Select Your User Type
+        Selectionner votre profile
       </Modal.Header>
-      <Modal.Body>
-        <div className="space-y-6">
-          <Button onClick={() => handleUserSelection('doctor')} gradientDuoTone="purpleToBlue">Doctor</Button>
-          <Button onClick={() => handleUserSelection('client')} gradientDuoTone=" purpleToBlue">Client</Button>
+      <Modal.Body >
+        <div className="flex  justify-between">
+          <Button onClick={() => handleUserSelection('doctor')} className="bg-custom-orange">Doctor</Button>
+          <Button onClick={() => handleUserSelection('client')} className=" bg-custom-blue ml-2">Client</Button>
         </div>
       </Modal.Body>
     </Modal>
