@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { Button, TextInput } from 'flowbite-react';
 import UserModal from '../Modal/modalUser';
 import messageService from '../../services/messageService';
+import VerifMentalHealth from './MistralAi/VerifMentalHealth';
 
 const socket = io('http://localhost:8000'); 
 
@@ -36,6 +37,8 @@ const Chat = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim()) {
+      if(userType != 'doctor')
+        VerifMentalHealth(message);
       const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message };
       try {
         await messageService.createMessage(newMessage);
