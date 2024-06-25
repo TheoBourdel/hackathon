@@ -1,3 +1,5 @@
+import messageController from "../controllers/messageController.js";
+
 const ROOM = 'global_room';
 
 export const socketHandler = (io) => {
@@ -6,8 +8,8 @@ export const socketHandler = (io) => {
 
     socket.join(ROOM);
 
-    socket.on('message', (message) => {
-      console.log(message);
+    socket.on('message',  (message) => {
+        messageController.createMessage(message)
       io.to(ROOM).emit('message', message);
     });
 
