@@ -1,15 +1,17 @@
 'use strict';
 import { Model, DataTypes } from 'sequelize';
-import {sequelize} from '../../config/database.js'; 
+import { sequelize } from '../../config/database.js';
+// import ReportModel from './reportModel.js';
 
 class User extends Model {
-  static associate(models) {
-    // define association here if needed
-  }
 }
 
 User.init({
-  username: {
+  firstname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastname: {
     type: DataTypes.STRING,
     allowNull: false,
   }
@@ -18,5 +20,11 @@ User.init({
   modelName: 'User',
 });
 
-export default User;
+// User.hasMany(ReportModel, {
+//   foreignKey: 'userId', // clé étrangère dans le modèle Report qui référence l'utilisateur
+//   onDelete: 'SET NULL',
+//   onUpdate: 'CASCADE',
+//   as: 'reports',
+// });
 
+export default User;

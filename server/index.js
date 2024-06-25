@@ -3,6 +3,7 @@ import cors from 'cors';
 import { connectDatabase } from './config/database.js';
 import userRoutes from './src/routes/userRoute.js';
 import messageRoutes from './src/routes/messageRoute.js';
+import reportRoutes from './src/routes/reportRoute.js';
 import http from 'http';
 import { socketHandler } from './src/ws/socket.js';
 import { Server } from 'socket.io';
@@ -19,6 +20,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api', userRoutes);
 app.use('/api', messageRoutes);
+app.use('/api', reportRoutes);
 
 const server = http.createServer(app);
 const io = new Server(server, {
