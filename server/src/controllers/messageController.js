@@ -57,6 +57,22 @@ class MessageController {
       res.status(500).json({ error: error.message });
     }
   }
-}
+  async getUserMessages(req, res) {
+
+    try {
+      const messages = await MessageRepository.getMessageByUserId(req.params.id);
+      if (messages) {
+        res.status(200).json(messages);
+      } else {
+        res.status(404).json({ error: 'Message not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+};
+
+
+
 
 export default new MessageController();
