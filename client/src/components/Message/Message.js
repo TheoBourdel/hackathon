@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import userService from '../../services/userService';
 import { Button } from 'flowbite-react';
-import UserList from './UserList';
 import { format } from 'date-fns';
 import FormModal from './FormModal';
 
