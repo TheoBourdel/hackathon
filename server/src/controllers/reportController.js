@@ -36,6 +36,15 @@ class ReportController {
         }
     }
 
+    async createRport(req, res) {
+        try {
+          const report = await ReportRepository.createRaport(req.body);
+          res.status(201).json(report);
+        } catch (error) {
+          res.status(500).json({ error: error.message });
+        }
+      }
+
 }
 
 export default new ReportController();

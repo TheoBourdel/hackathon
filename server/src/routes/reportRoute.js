@@ -5,5 +5,7 @@ const router = express.Router();
 
 router.get('/reports', ReportController.getAllReports);
 router.get('/report/:id/pdf', ReportController.getReportPdf);
+router.post('/report', ReportController.createRport);
+
 
 export default router;
