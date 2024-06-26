@@ -37,7 +37,7 @@ const Chat = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim()) {
-      if(userType != 'doctor')
+      if(userType !== 'doctor')
         VerifMentalHealth(message);
       const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message };
       try {

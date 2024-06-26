@@ -14,6 +14,10 @@ class ReportRepository {
             ],
         });
     }
+
+    async getReportById(id) {
+        return await ReportModel.findByPk(id);
+    }
 }
 
 export default new ReportRepository();
