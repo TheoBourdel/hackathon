@@ -20,9 +20,7 @@ const Chat = () => {
     if (userType) {
       socket.emit('joinRoom', room);
     }
-
     messageService.getMessages().then(setMessages);
-
     socket.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import userService from '../../services/userService';
 import { Button } from 'flowbite-react';
-import UserList from './UserList';
 import { format } from 'date-fns';
 import FormModal from './FormModal';
 
@@ -16,12 +15,11 @@ const Messages = () => {
   const closeModal = () => setModalIsOpen(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
 
-
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const usersData = await userService.getUsers();
+        console.log(usersData)
         setUsers(usersData);
       } catch (error) {
         console.error('Error fetching users', error);
@@ -33,7 +31,6 @@ const Messages = () => {
 
   const handleFormSubmit = (formData) => {
     console.log('Form submitted with category:', formData.category);
-    // Traitement supplémentaire du formulaire ici
   };
 
   useEffect(() => {
@@ -86,11 +83,11 @@ const Messages = () => {
               onClick={() => handleUserClick(user.id)}
             >
               <img
-                src={`https://ui-avatars.com/api/?name=${user.username}`}
+                src={`https://ui-avatars.com/api/?name=${user.firstname}`}
                 alt="profile"
                 className="w-10 h-10 rounded-full mr-2"
               />
-              <span className="font-semibold">{user.username}</span>
+              <span className="font-semibold">{user.firstname}</span>
             </div>
           ))}
         </div>
