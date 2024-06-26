@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import { Button, TextInput } from 'flowbite-react';
 import UserModal from '../Modal/modalUser';
@@ -14,12 +14,14 @@ const Chat = () => {
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const room = 'global_room'; 
 
+  const messagesEndRef = useRef(null);
+
   useEffect(() => {
     if (userType) {
       socket.emit('joinRoom', room);
     }
 
-    messageService.getMessages().then(setMessages)
+    messageService.getMessages().then(setMessages);
 
     socket.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -29,6 +31,14 @@ const Chat = () => {
       socket.off('message');
     };
   }, [userType]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -49,18 +59,16 @@ const Chat = () => {
       }
     }
   };
+
   return (
     <div className="p-0">
-        <div className='mb-4'> 
-            <h1 className='text-custom-black text-xl font-semibold'>Chat</h1>
-            {
-            
-            userType && <p>conversation avec {userType === 'doctor' ? 'Le client' : 'Le medcin'}</p>
-            }
-        </div>
+      <div className='mb-4'> 
+        <h1 className='text-custom-black text-xl font-semibold'>Chat</h1>
+        {userType && <p>conversation avec {userType === 'doctor' ? 'Le client' : 'Le medcin'}</p>}
+      </div>
       {userType ? (
         <>
-          <div className="chat-window border p-4 rounded">
+          <div className="chat-window border p-4 rounded bg-gray-50 h-5/6">
             <div className="messages overflow-y-auto h-64 flex flex-col">
               {messages.map((msg, index) => (
                 <div
@@ -74,6 +82,7 @@ const Chat = () => {
                   {msg.content}
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
           </div>
           <form onSubmit={handleSubmit} className="flex mt-4">
