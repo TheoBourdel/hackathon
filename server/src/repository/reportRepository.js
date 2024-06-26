@@ -18,6 +18,10 @@ class ReportRepository {
     async getReportById(id) {
         return await ReportModel.findByPk(id);
     }
+
+    async createReport(reportData) {
+        return await ReportModel.create(reportData);
+    }
 }
 
 export default new ReportRepository();

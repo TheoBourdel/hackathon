@@ -10,6 +10,16 @@ class Message extends Model {
 }
 
 Message.init({
+  reportId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'reportModel',
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+  },
   userId: {
     type: DataTypes.INTEGER,
     references: {

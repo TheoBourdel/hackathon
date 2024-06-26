@@ -36,6 +36,16 @@ class ReportController {
         }
     }
 
+    async createReport(req, res) {
+        try {
+            const { userId, title, description, category, status } = req.body;
+            const newReport = await ReportRepository.createReport({ userId, title, description, category, status });
+            res.status(201).json(newReport);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
 }
 
 export default new ReportController();

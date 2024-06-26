@@ -39,7 +39,7 @@ const Chat = () => {
     if (message.trim()) {
       if(userType !== 'doctor')
         VerifMentalHealth(message);
-      const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message };
+      const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: null };
       try {
         await messageService.createMessage(newMessage);
         socket.emit('message', newMessage);
