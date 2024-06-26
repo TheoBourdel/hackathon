@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import MistralClient from '@mistralai/mistralai';
+import { Button, FileInput, Label } from "flowbite-react";
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
@@ -8,12 +9,10 @@ const Vocal = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fonction pour gérer le changement de fichier
   const handleFileChange = (e) => {
     setFiles(e.target.files);
   };
 
-  // Fonction pour envoyer les fichiers à l'API
   const uploadFiles = async (formData) => {
     const url = 'https://api.hume.ai/v0/batch/jobs';
     const apiKey = 'oJeRhCaUXpg18g2NZC0yKouNoOurmfoTXNkPSHFEnw9hi9dR';
@@ -34,8 +33,6 @@ const Vocal = () => {
     } catch (err) {
       setError('Error uploading files');
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -81,8 +78,8 @@ const Vocal = () => {
 
         const jobId = await uploadFiles(formData);
         if (jobId) {
-                await new Promise(resolve => setTimeout(resolve, 10000));
-                await getPredictions(jobId);
+          await new Promise(resolve => setTimeout(resolve, 10000));
+          await getPredictions(jobId);
         }
     } catch (err) {
         setError('Error handling upload');
@@ -104,7 +101,7 @@ const Vocal = () => {
           { role: 'user', content: JSON.stringify(humeReport) }
         ],
     });
-
+    setLoading(false);
     const responseContent = chatResponse.choices[0].message.content;
     console.log("Content: " + responseContent);
   }
@@ -112,13 +109,10 @@ const Vocal = () => {
   const calculateAverageEmotions = (report) => {
     const averageEmotions = {};
   
-    // Parcourir chaque objet dans humeReport
     report.forEach((item) => {
-      // Parcourir chaque émotion dans item.emotions
       item.emotions.forEach((emotion) => {
         const { name, score } = emotion;
   
-        // Initialiser l'accumulateur s'il n'existe pas encore
         if (!averageEmotions[name]) {
           averageEmotions[name] = {
             totalScore: 0,
@@ -126,14 +120,12 @@ const Vocal = () => {
             averageScore: 0
           };
         }
-  
-        // Ajouter le score à totalScore et incrémenter le compteur
+
         averageEmotions[name].totalScore += score;
         averageEmotions[name].count++;
       });
     });
   
-    // Calculer la moyenne pour chaque émotion
     Object.keys(averageEmotions).forEach((emotionName) => {
       const { totalScore, count } = averageEmotions[emotionName];
       averageEmotions[emotionName].averageScore = totalScore / count;
@@ -144,13 +136,15 @@ const Vocal = () => {
     
 
   return (
-    <div>
-      <input type="file" multiple onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? 'Uploading...' : 'Upload Files'}
-      </button>
-      {error && <p>{error}</p>}
-      {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
+    <div className='w-max flex flex-row gap-2'>
+      <FileInput id="file-upload" onChange={handleFileChange} />
+        {
+          files.length > 0 && (
+            <Button color='gray' onClick={handleUpload} disabled={loading}>
+              {loading ? 'Détection des émotions...' : 'Upload Files'}
+            </Button>
+          )
+        }
     </div>
   );
 };
