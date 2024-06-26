@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Select, TextInput, Textarea } from 'flowbite-react';
+import rapportService from '../../services/rapportService';
 
 const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages, setSelectedMessages }) => {
   const [category, setCategory] = useState('normal');
@@ -31,10 +32,21 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
     }
   }, [currentuser, currentMessages]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const report = {
+      userId: user.id,
+      title: "Rapport de Performance",
+      description: description,
+      category: category,
+      status: "Non traité"
+    }
+
+    const r = await rapportService.createRpport(report);
+    console.log(r)
     console.log(description, user, selectedMessages, category)
+
     // onSubmit({ category });
     // onRequestClose();
   };
@@ -49,7 +61,7 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
           <div className="mb-4">
             {user && (
               <TextInput
-                value={user.username}
+                value={user.firstname}
                 disabled
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               />

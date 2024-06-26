@@ -22,6 +22,7 @@ class ReportRepository {
     async createReport(reportData) {
         return await ReportModel.create(reportData);
     }
+
 }
 
 export default new ReportRepository();
