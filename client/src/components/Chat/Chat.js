@@ -44,10 +44,13 @@ const Chat = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (message.trim()) {
-      if(userType !== 'doctor')
-        VerifMentalHealth(message);
-      const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: null };
+    if (message && message.trim()) {
+      let reportId;
+      if (userType !== 'doctor') {
+        reportId = await VerifMentalHealth(message);
+      }
+
+      const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: reportId };
       try {
         await messageService.createMessage(newMessage);
         socket.emit('message', newMessage);
@@ -62,7 +65,9 @@ const Chat = () => {
     <div className="p-0">
       <div className='mb-4'> 
         <h1 className='text-custom-black text-xl font-semibold'>Chat</h1>
-        {userType && <p>conversation avec {userType === 'doctor' ? 'Le client' : 'Le medcin'}</p>}
+        {
+          userType && <p>conversation avec {userType === 'doctor' ? 'Le client' : 'Le medcin'}</p>
+        }
       </div>
       {userType ? (
         <>

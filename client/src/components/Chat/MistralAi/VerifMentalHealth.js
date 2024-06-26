@@ -1,12 +1,13 @@
 import MistralClient from '@mistralai/mistralai';
+import reportService from '../../../services/reportService';
 
 const apiKey = 'Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a';
 const client = new MistralClient(apiKey);
 
 async function VerifMentalHealth(message) {
-  if (message.trim() === '') {
+  if (message && message.trim() === '') {
     alert('Please enter a message');
-    return;
+    return null;
   }
 
   try {
@@ -22,25 +23,28 @@ async function VerifMentalHealth(message) {
     });
 
     const responseContent = chatResponse.choices[0].message.content;
-    console.log("Content: " + responseContent);
 
     let category;
     if (responseContent.includes('very alarming state')) {
       category = 'Très urgent';
+      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "status" };
+      const createdReport = await reportService.createReport(newReport);
+      return createdReport.id;
+
     } else if (responseContent.includes('alarming state')) {
       category = 'urgent';
+      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "status" };
+      const createdReport = await reportService.createReport(newReport);
+      return createdReport.id;
+
     } else if (responseContent.includes('nothing to report')) {
       category = 'Rien à signaler';
-    }
-
-    console.log("Category: " + category);
-
-    if (category === 'Very alarming state') {
-      alert('The message indicates a very alarming mental state. Please seek professional help immediately.');
+      return null;
     }
 
   } catch (error) {
     console.error('Error:', error);
+    return null;
   }
 }
 
