@@ -9,6 +9,15 @@ class MessageRepository {
     return await Message.findByPk(id);
   }
 
+  async getMessageByUserId(id) {
+    return await Message.findAll({
+      where: {
+        userId: id
+      }
+    });
+  }
+
+
   async getAllMessages() {
     return await Message.findAll();
   }
