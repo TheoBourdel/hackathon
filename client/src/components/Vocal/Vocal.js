@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import MistralClient from '@mistralai/mistralai';
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
@@ -49,7 +50,11 @@ const Vocal = () => {
         }
       });
 
+      const humeReport = predictions.data[0].results.predictions[0].models.burst.grouped_predictions[0].predictions
       console.log(predictions.data[0].results.predictions[0].models.burst.grouped_predictions[0].predictions);
+
+      const average = calculateAverageEmotions(humeReport);
+      verifyMentalHealth(average);
     } catch (err) {
       setError('Error fetching predictions');
       console.error(err);
@@ -84,6 +89,59 @@ const Vocal = () => {
         console.error(err);
     }
   };
+
+  const verifyMentalHealth = async (humeReport) => {
+    const apiKey = 'Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a';
+    const client = new MistralClient(apiKey);
+
+    const chatResponse = await client.chat({
+        model: 'mistral-large-latest',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an AI trained to analyze Javascript Object and categorize the mental state of the author into four categories: "nothing to report" (no issues detected), "alarming state" (depression, burnout, etc.), "very alarming state" (suicidal tendencies, etc.). Please provide your analysis and categorization based on the following report'
+          },
+          { role: 'user', content: JSON.stringify(humeReport) }
+        ],
+    });
+
+    const responseContent = chatResponse.choices[0].message.content;
+    console.log("Content: " + responseContent);
+  }
+
+  const calculateAverageEmotions = (report) => {
+    const averageEmotions = {};
+  
+    // Parcourir chaque objet dans humeReport
+    report.forEach((item) => {
+      // Parcourir chaque émotion dans item.emotions
+      item.emotions.forEach((emotion) => {
+        const { name, score } = emotion;
+  
+        // Initialiser l'accumulateur s'il n'existe pas encore
+        if (!averageEmotions[name]) {
+          averageEmotions[name] = {
+            totalScore: 0,
+            count: 0,
+            averageScore: 0
+          };
+        }
+  
+        // Ajouter le score à totalScore et incrémenter le compteur
+        averageEmotions[name].totalScore += score;
+        averageEmotions[name].count++;
+      });
+    });
+  
+    // Calculer la moyenne pour chaque émotion
+    Object.keys(averageEmotions).forEach((emotionName) => {
+      const { totalScore, count } = averageEmotions[emotionName];
+      averageEmotions[emotionName].averageScore = totalScore / count;
+    });
+  
+    return averageEmotions;
+  };
+    
 
   return (
     <div>
