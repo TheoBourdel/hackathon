@@ -29,7 +29,8 @@ export function buildPdf(report, dataCallback, endCallback) {
     doc.moveDown();
 
     if (report.messages && report.messages.length > 0) {
-        doc.fontSize(18).text('Messages:', { underline: true });
+        doc.fontSize(18).text('Messages');
+        doc.fontSize(12).text(`Voici les messages associés à ce rapport jugés comme ${report.category} :`);
         doc.moveDown();
         report.messages.forEach(message => {
             const messageDate = new Date(message.timestamp);
@@ -38,8 +39,8 @@ export function buildPdf(report, dataCallback, endCallback) {
             const messageYear = messageDate.getFullYear();
             const formattedMessageDate = `${messageDay}-${messageMonth}-${messageYear}`;
             
-            doc.fontSize(12).fillColor('black').text(`Message on ${formattedMessageDate}:`);
-            doc.fontSize(12).fillColor('black').text(`${message.content}`, { indent: 20  });
+            doc.fontSize(10).fillColor('black').text(`Message le ${formattedMessageDate} :`, { underline: true });
+            doc.fontSize(8).fillColor('black').text(`${message.content}`, { indent: 20  });
             doc.moveDown();
         });
     } else {

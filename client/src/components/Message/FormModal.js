@@ -3,7 +3,7 @@ import { Button, Select, TextInput, Textarea, Drawer, Label } from 'flowbite-rea
 import rapportService from '../../services/rapportService';
 
 const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages }) => {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('Urgent');
   const [messages, setMessages] = useState(currentMessages);
   const [user, setUser] = useState();
   const [selectedMessages, setSelectedMessagesForm] = useState([]);
