@@ -23,11 +23,9 @@ async function VerifMentalHealth(message) {
     });
 
     const responseContent = chatResponse.choices[0].message.content;
-    console.log(responseContent);
 
     let category;
     let description = extractDescription(responseContent);
-    console.log("description : "+ description);
 
     if (responseContent.includes('Très urgent')) {
       category = 'Très urgent';
