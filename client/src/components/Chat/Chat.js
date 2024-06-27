@@ -53,6 +53,7 @@ const Chat = () => {
         userInfo = await VerifMentalHealth(message);
       }
       newMessage.reportId = userInfo.reportId;
+
       try {
         await messageService.createMessage(newMessage);
       } catch (error) {
