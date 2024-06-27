@@ -13,7 +13,6 @@ const Messages = () => {
   const [user, setUser] = useState();
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-  const [selectedMessages, setSelectedMessages] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -31,6 +30,7 @@ const Messages = () => {
   const handleFormSubmit = (formData) => {
   };
 
+chage-messages-dans-repport
   const handleUserClick = async (userId) => {
     try {
       const userMessages = await userService.getUserMessages(userId);

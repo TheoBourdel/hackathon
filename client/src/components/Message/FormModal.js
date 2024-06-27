@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Select, TextInput, Textarea, Drawer, Label } from 'flowbite-react';
 import rapportService from '../../services/rapportService';
 
-const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages, setSelectedMessages }) => {
+const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages }) => {
   const [category, setCategory] = useState('normal');
   const [messages, setMessages] = useState(currentMessages);
   const [user, setUser] = useState();
@@ -14,10 +14,8 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
 
     if (isSelected) {
       setSelectedMessagesForm(selectedMessages.filter(selectedMessage => selectedMessage.content !== message.content));
-      setSelectedMessages(selectedMessages.filter(selectedMessage => selectedMessage.content !== message.content));
     } else {
       setSelectedMessagesForm([...selectedMessages, message]);
-      setSelectedMessages([...selectedMessages, message]);
     }
   };
 
@@ -39,10 +37,12 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
       title: "Rapport de Performance",
       description: description,
       category: category,
-      status: "Non traité"
+      status: "Non traité",
+      messages: selectedMessages
     }
 
-    const r = await rapportService.createRpport(report);
+    await rapportService.createRpport(report);
+    onRequestClose();
   };
 
   return (

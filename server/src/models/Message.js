@@ -46,11 +46,10 @@ Message.init({
   timestamp: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-  }
+  },
 }, {
   sequelize,
   modelName: 'Message',
 });
 
 export default Message;
-

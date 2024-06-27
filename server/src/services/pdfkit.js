@@ -24,5 +24,27 @@ export function buildPdf(report, dataCallback, endCallback) {
         indent: 30
     });
 
+    doc.moveDown();
+    doc.moveDown();
+
+    if (report.messages && report.messages.length > 0) {
+        doc.fontSize(18).text('Messages:', { underline: true });
+        doc.moveDown();
+        report.messages.forEach(message => {
+            const messageDate = new Date(message.timestamp);
+            const messageDay = String(messageDate.getDate()).padStart(2, '0');
+            const messageMonth = String(messageDate.getMonth() + 1).padStart(2, '0');
+            const messageYear = messageDate.getFullYear();
+            const formattedMessageDate = `${messageDay}-${messageMonth}-${messageYear}`;
+            
+            doc.fontSize(12).fillColor('black').text(`Message on ${formattedMessageDate}:`);
+            doc.fontSize(12).fillColor('black').text(`${message.content}`, { indent: 20  });
+            doc.moveDown();
+        });
+    } else {
+        doc.fontSize(25).fillColor('#FB4F14').text('pas de messages');
+    }
+
+
     doc.end();
 }

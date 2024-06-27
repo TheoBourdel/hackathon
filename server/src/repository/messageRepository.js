@@ -17,7 +17,6 @@ class MessageRepository {
     });
   }
 
-
   async getAllMessages() {
     return await Message.findAll();
   }
