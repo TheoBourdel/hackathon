@@ -16,30 +16,34 @@ async function VerifMentalHealth(message) {
       messages: [
         {
           role: 'system',
-          content: 'You are an AI trained to analyze text and categorize the mental state of the author into four categories: "nothing to report" (no issues detected), "alarming state" (depression, burnout, etc.), "very alarming state" (suicidal tendencies, etc.). Please provide your analysis and categorization based on the following message.'
+          content: 'You are an AI trained to analyze text and categorize the mental state of the author into four categories: "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.) in french. Additionally, provide a brief description (in French, 255 characters max) of the mental state based on the following message. Structure the response as follows: Category : <category here> Practical "Description : <description here>"'
         },
         { role: 'user', content: message }
       ],
     });
 
     const responseContent = chatResponse.choices[0].message.content;
+    console.log(responseContent);
 
     let category;
-    if (responseContent.includes('very alarming state')) {
+    let description = extractDescription(responseContent);
+    console.log("description : "+ description);
+
+    if (responseContent.includes('Très urgent')) {
       category = 'Très urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "SMS" };
+      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS" };
       const createdReport = await reportService.createReport(newReport);
-      return createdReport.id;
+      return { reportId: createdReport.id };
 
-    } else if (responseContent.includes('alarming state')) {
-      category = 'urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "SMS" };
+    } else if (responseContent.includes('Urgent')) {
+      category = 'Urgent';
+      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS" };
       const createdReport = await reportService.createReport(newReport);
-      return createdReport.id;
+      return { reportId: createdReport.id};
 
-    } else if (responseContent.includes('nothing to report')) {
+    } else if (responseContent.includes('Rien à signaler')) {
       category = 'Rien à signaler';
-      return null;
+      return { reportId: null };
     }
 
   } catch (error) {
@@ -47,5 +51,16 @@ async function VerifMentalHealth(message) {
     return null;
   }
 }
+
+function extractDescription(responseContent) {
+  const descriptionMarker = 'Description :';
+  const descriptionStart = responseContent.indexOf(descriptionMarker);
+
+  if (descriptionStart !== -1) {
+    return responseContent.substring(descriptionStart + descriptionMarker.length).trim();
+  }
+  return 'No specific description provided.';
+}
+
 
 export default VerifMentalHealth;

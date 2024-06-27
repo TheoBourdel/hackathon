@@ -48,11 +48,11 @@ const Chat = () => {
       socket.emit('message', newMessage);
       setMessage('');
 
-      let reportId;
+      let userInfo;
       if (userType !== 'doctor') {
-        reportId = await VerifMentalHealth(message);
+        userInfo = await VerifMentalHealth(message);
       }
-      newMessage.reportId = reportId;
+      newMessage.reportId = userInfo.reportId;
       try {
         await messageService.createMessage(newMessage);
       } catch (error) {
