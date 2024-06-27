@@ -96,7 +96,7 @@ const Vocal = () => {
         messages: [
           {
             role: 'system',
-            content: 'You are an AI trained to analyze Javascript Object and categorize the mental state of the author into four categories: "nothing to report" (no issues detected), "alarming state" (depression, burnout, etc.), "very alarming state" (suicidal tendencies, etc.). Please provide your analysis and categorization based on the following report'
+            content: 'You are an AI trained to analyze Javascript Object and categorize the mental state of the author into four categories: "nothing to report" (no issues detected), "alarming state" (depression, burnout, etc.), "very alarming state" (suicidal tendencies, etc.). Give me just the category and a small description of the mental state of the author.'
           },
           { role: 'user', content: JSON.stringify(humeReport) }
         ],
