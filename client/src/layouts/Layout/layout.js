@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <>
         <Header />
-        <main className='flex-1 p-4 flex flex-col'>
+        <main className='flex-1 p-4 flex flex-col overflow-hidden'>
             <Outlet />
         </main>
     </>

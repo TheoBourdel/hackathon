@@ -15,10 +15,11 @@ export function buildPdf(report, dataCallback, endCallback) {
     doc.fontSize(25).fillColor('#FB4F14').text('Calmedica');
     doc.moveDown();
     doc.fontSize(14).fillColor('black').text(`${formattedDate}`);
+    doc.fontSize(14).text(`Source :  ${report.status}`);
     doc.fontSize(14).text(`Rapport ${report.category}`, {underline: true});
     doc.moveDown();
     doc.moveDown();
-    doc.fontSize(25).text(`${report.title}`);
+    doc.fontSize(25).text(`Rapport de santé mentale de ${report.User.firstname} ${report.User.lastname}`); 
     doc.moveDown();
     doc.fontSize(12).text(`${report.description}`, {
         indent: 30
@@ -42,7 +43,7 @@ export function buildPdf(report, dataCallback, endCallback) {
             doc.moveDown();
         });
     } else {
-        doc.fontSize(25).fillColor('#FB4F14').text('pas de messages');
+        //doc.fontSize(25).text('pas de messages');
     }
 
 

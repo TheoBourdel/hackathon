@@ -44,9 +44,11 @@ class ReportController {
             const { userId, title, description, category, status, messages } = req.body;
             const newReport = await ReportRepository.createReport({ userId, title, description, category, status });
             
-            await Promise.all(messages.map(async (message) => {
-              return  messageRepository.updateMessage(message.id, {reportId: newReport.id })
-            }));
+            if (messages) {
+                await Promise.all(messages.map(async (message) => {
+                    return  messageRepository.updateMessage(message.id, {reportId: newReport.id })
+                }));
+            }
 
             res.status(201).json(newReport);
         } catch (error) {

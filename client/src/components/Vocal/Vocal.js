@@ -48,6 +48,11 @@ const Vocal = () => {
         }
       });
 
+      if(predictions.data[0].results.predictions[0].models.burst.grouped_predictions.length === 0) {
+        setError('Nous n\'avons pas pu détecter d\'émotions dans votre fichier audio. Veuillez réessayer.');
+        setLoading(false);
+        return;
+      }
       const humeReport = predictions.data[0].results.predictions[0].models.burst.grouped_predictions[0].predictions
 
       const average = calculateAverageEmotions(humeReport);
@@ -96,9 +101,9 @@ const Vocal = () => {
         messages: [
           {
             role: 'system',
-            content: 'You are an AI trained to analyze Javascript Object and categorize the mental state of the author into four categories: "nothing to report" (no issues detected), "alarming state" (depression, burnout, etc.), "very alarming state" (suicidal tendencies, etc.). Give me just the category and a small description of the mental state of the author.'
+            content: `Je vais te fournir un rapport d'émotion sous forme de chaîne de caractères. Ce rapport contient le nom de chaque émotion accompagné d'un score. En fonction des scores des émotions les plus élevés, j'aimerais que tu détermines si l'état émotionnel général est "nothing to report", "alarming state" ou "very alarming state". Je souhaite également que tu me fournisses une description détaillée de l'état mental de la personne basée sur ces émotions. Ne mentionne pas "alarming state" si tu détermines que c'est un "very alarming state".`
           },
-          { role: 'user', content: JSON.stringify(humeReport) }
+          { role: 'user', content: "Voici le rapport d'émotion : " + JSON.stringify(humeReport) }
         ],
     });
     setLoading(false);
@@ -155,16 +160,19 @@ const Vocal = () => {
     
 
   return (
-    <div className='w-max flex flex-row gap-2'>
-      <FileInput id="file-upload" onChange={handleFileChange} />
-        {
-          files.length > 0 && (
-            <Button color='gray' onClick={handleUpload} disabled={loading}>
-              {loading ? 'Détection des émotions...' : 'Upload Files'}
-            </Button>
-          )
-        }
-    </div>
+    <>
+      <div className='w-max flex flex-row gap-2'>
+        <FileInput id="file-upload" onChange={handleFileChange} />
+          {
+            files.length > 0 && (
+              <Button color='gray' onClick={handleUpload} disabled={loading}>
+                {loading ? 'Détection des émotions...' : 'Upload Files'}
+              </Button>
+            )
+          }
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+    </>
   );
 };
 

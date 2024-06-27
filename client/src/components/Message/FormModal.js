@@ -3,7 +3,7 @@ import { Button, Select, TextInput, Textarea, Drawer, Label } from 'flowbite-rea
 import rapportService from '../../services/rapportService';
 
 const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages }) => {
-  const [category, setCategory] = useState('normal');
+  const [category, setCategory] = useState('');
   const [messages, setMessages] = useState(currentMessages);
   const [user, setUser] = useState();
   const [selectedMessages, setSelectedMessagesForm] = useState([]);
@@ -37,7 +37,7 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
       title: "Rapport de Performance",
       description: description,
       category: category,
-      status: "Non traité",
+      status: "SMS",
       messages: selectedMessages
     }
 

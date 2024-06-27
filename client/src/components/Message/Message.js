@@ -30,7 +30,6 @@ const Messages = () => {
   const handleFormSubmit = (formData) => {
   };
 
-chage-messages-dans-repport
   const handleUserClick = async (userId) => {
     try {
       const userMessages = await userService.getUserMessages(userId);
@@ -59,7 +58,7 @@ chage-messages-dans-repport
               <Button type="submit" disabled={isUserSelectionned} className="bg-custom-orange" onClick={openModal} >Generer le rapport</Button>
           </div>
       </div>
-      <FormModal setSelectedMessages={setSelectedMessages} isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
+      <FormModal isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
 
     <div className="flex-1 flex flex-row">
       <div className="w-1/3 p-4">

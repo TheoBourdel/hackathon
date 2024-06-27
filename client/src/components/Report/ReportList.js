@@ -4,7 +4,7 @@ import ReportItem from './ReportItem';
 
 export default function ReportList({ reports }) {
   return (
-    <Table>
+    <Table className='overflow-scroll'>
         <Table.Head>
             <Table.HeadCell>Nom / Prenom</Table.HeadCell>
             <Table.HeadCell>Catégorie</Table.HeadCell>
