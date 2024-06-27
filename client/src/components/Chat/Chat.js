@@ -45,16 +45,17 @@ const Chat = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message && message.trim()) {
+      var newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: null };
+      socket.emit('message', newMessage);
+      setMessage('');
+
       let reportId;
       if (userType !== 'doctor') {
         reportId = await VerifMentalHealth(message);
       }
-
-      const newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: reportId };
+      newMessage.reportId = reportId;
       try {
         await messageService.createMessage(newMessage);
-        socket.emit('message', newMessage);
-        setMessage('');
       } catch (error) {
         console.error('Failed to send message', error);
       }
