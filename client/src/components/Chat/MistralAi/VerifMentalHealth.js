@@ -27,13 +27,13 @@ async function VerifMentalHealth(message) {
     let category;
     if (responseContent.includes('very alarming state')) {
       category = 'Très urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "status" };
+      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "SMS" };
       const createdReport = await reportService.createReport(newReport);
       return createdReport.id;
 
     } else if (responseContent.includes('alarming state')) {
       category = 'urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "status" };
+      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "SMS" };
       const createdReport = await reportService.createReport(newReport);
       return createdReport.id;
 

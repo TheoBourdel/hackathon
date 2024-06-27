@@ -50,12 +50,7 @@ export default function Report() {
           <option>--Tous--</option>
           <option>Très urgent</option>
           <option>Urgent</option>
-          <option>Normal</option>
         </Select>
-
-        {/* <Datepicker className='w-40' />
-
-        <button>RESET FILTER</button> */}
       </div>
 
       <div className="overflow-x-auto">

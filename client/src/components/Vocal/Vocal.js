@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import MistralClient from '@mistralai/mistralai';
-import { Button, FileInput, Label } from "flowbite-react";
+import { Button, FileInput } from "flowbite-react";
+import reportService from '../../services/reportService';
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
@@ -48,7 +49,6 @@ const Vocal = () => {
       });
 
       const humeReport = predictions.data[0].results.predictions[0].models.burst.grouped_predictions[0].predictions
-      console.log(predictions.data[0].results.predictions[0].models.burst.grouped_predictions[0].predictions);
 
       const average = calculateAverageEmotions(humeReport);
       verifyMentalHealth(average);
@@ -104,6 +104,25 @@ const Vocal = () => {
     setLoading(false);
     const responseContent = chatResponse.choices[0].message.content;
     console.log("Content: " + responseContent);
+    let category;
+
+    if (responseContent.includes('very alarming state')) {
+      category = 'Très urgent';
+      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "Audio" };
+      const createdReport = await reportService.createReport(newReport);
+      return createdReport.id;
+
+    } else if (responseContent.includes('alarming state')) {
+      category = 'Urgent';
+      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "Audio" };
+      const createdReport = await reportService.createReport(newReport);
+      return createdReport.id;
+
+    } else if (responseContent.includes('nothing to report')) {
+      category = 'Rien à signaler';
+      return null;
+    }
+    console.log("Category: " + category);
   }
 
   const calculateAverageEmotions = (report) => {
