@@ -51,8 +51,8 @@ const Chat = () => {
       let userInfo;
       if (userType !== 'doctor') {
         userInfo = await VerifMentalHealth(message);
+        newMessage.reportId = userInfo.reportId;
       }
-      newMessage.reportId = userInfo.reportId;
 
       try {
         await messageService.createMessage(newMessage);
@@ -79,8 +79,8 @@ const Chat = () => {
                   key={index}
                   className={`message p-2 my-2 rounded max-w-xs break-words ${
                     msg.userId === (userType === 'doctor' ? 1 : 2) 
-                      ? 'bg-gray-200 self-end text-right ml-auto' 
-                      : 'bg-custom-orange text-white self-start text-left mr-auto'
+                      ? 'bg-custom-orange text-white self-end text-right ml-auto'
+                      : 'bg-gray-200 self-start text-left mr-auto' 
                   }`}
                 >
                   {msg.content}

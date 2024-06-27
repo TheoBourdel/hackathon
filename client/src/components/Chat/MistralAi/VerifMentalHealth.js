@@ -72,10 +72,9 @@ async function giveAdvice(message, setMessages) {
   const urgentMessage = { userId: 1, content: `AI Generated: \n ${advice}`, reportId: null };
   socket.emit('message', urgentMessage);
   try {
-    await messageService.createMessage(urgentMessage);
 
-    const updatedMessages = await messageService.getMessages();
-    setMessages(updatedMessages);
+    //const updatedMessages = await messageService.getMessages();
+    //setMessages(updatedMessages);
 
   } catch (error) {
     console.error('Failed to create urgent message', error);
