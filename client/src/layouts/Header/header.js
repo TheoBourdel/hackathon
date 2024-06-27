@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import CalmedicaLogo from '../../assets/calmedica-logo.png'
 
 export default function Header() {
     const location = useLocation();
@@ -9,6 +10,7 @@ export default function Header() {
             <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex flex-wrap items-center justify-between p-4">
                     <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                        <img src={CalmedicaLogo} alt='calmedica-logo' className='w-8 h-8' />
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-custom-orange">Calmedica</span>
                     </Link>
 
