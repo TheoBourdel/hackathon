@@ -34,6 +34,11 @@ ReportModel.init({
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+
+  },
   status: {
     type: DataTypes.STRING,
     allowNull: false,
