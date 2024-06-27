@@ -29,17 +29,7 @@ const Messages = () => {
   }, []);
 
   const handleFormSubmit = (formData) => {
-    console.log('Form submitted with category:', formData.category);
   };
-
-  useEffect(() => {
-
-    if(selectedMessages.length !=0) {
-      console.log(selectedMessages)
-    }
-
-
-  }, [selectedMessages])
 
   const handleUserClick = async (userId) => {
     try {
@@ -47,7 +37,6 @@ const Messages = () => {
       const user = await userService.getUser(userId);
 
       if(user && userMessages) {
-        console.log(user, userMessages)
         setUser(user)
         setMessages(userMessages);
         setIsUserSelectionned(false)
@@ -61,39 +50,39 @@ const Messages = () => {
 
   return (
     <>
-    <div className="flex justify-between  ">
-        <div className='mb-4'>
-            <h1 className='text-custom-black text-xl font-semibold'>Messages</h1>
-            <p>Liste des utilisateurs</p>
-        </div>
-        <div className="">
-            <Button type="submit" disabled={isUserSelectionned} className="bg-custom-orange" onClick={openModal} >Generer le rapport</Button>
-        </div>
-    </div>
-    <FormModal setSelectedMessages={setSelectedMessages} isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
+      <div className="flex justify-between  ">
+          <div className='mb-4'>
+              <h1 className='text-custom-black text-xl font-semibold'>Messages</h1>
+              <p>Liste des messages par utilisateurs</p>
+          </div>
+          <div className="">
+              <Button type="submit" disabled={isUserSelectionned} className="bg-custom-orange" onClick={openModal} >Generer le rapport</Button>
+          </div>
+      </div>
+      <FormModal setSelectedMessages={setSelectedMessages} isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
 
-    <div className="flex h-screen">
-      <div className="w-1/3 bg-gray-50 p-4 border-r">
-        <div className="user-list">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className="user p-2 my-2 mx-2  border-b border-gray-400 flex items-center cursor-pointer"
-              onClick={() => handleUserClick(user.id)}
-            >
-              <img
-                src={`https://ui-avatars.com/api/?name=${user.firstname}`}
-                alt="profile"
-                className="w-10 h-10 rounded-full mr-2"
-              />
-              <span className="font-semibold">{user.firstname}</span>
-            </div>
+    <div className="flex-1 flex flex-row">
+      <div className="w-1/3 p-4">
+        <div className="user-list flex flex-col gap-4 justify-center">
+          {users.map((user, index) => (
+            <React.Fragment key={user.id}>
+              <div
+                className={`p-4 rounded-2xl flex items-center cursor-pointer flex flex-row gap-2 hover:bg-gray-100 ${selectedUser === user.id ? 'bg-gray-100' : ''}`}              
+                onClick={() => handleUserClick(user.id)}
+              >
+                <div className='p-2 bg-gray-200 rounded-xl'>{user.firstname.charAt(0).toUpperCase()}{user.lastname.charAt(0).toUpperCase()}</div>
+                <div className='flex flex-col'>
+                  <span>{user.firstname} {user.lastname}</span>
+                  <span className='text-gray-400 text-sm font-light'>{user.createdAt.split('T')[0]}</span>
+                </div>
+              </div>
+              {index < users.length - 1 && <hr />}
+            </React.Fragment>
           ))}
         </div>
       </div>
-      <div className="w-2/3 pl-4 bg-gray-00 ">
-        <div className="messages-card p-4 border rounded h-3/4">
-          <h2 className="text-xl font-bold mb-2">Messages</h2>
+        <div className="p-4 border-l w-2/3">
+          <h2 className="text-xl font-bold">Messages</h2>
           {selectedUser ? (
             messages.length > 0 ? (
               messages.map((msg, index) => (
@@ -115,8 +104,6 @@ const Messages = () => {
             <p>Selectionner un utilisateur pour voir ses messages</p>
           )}
         </div>
-  
-      </div>
     </div>
     </>
   );

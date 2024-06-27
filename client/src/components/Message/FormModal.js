@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Select, TextInput, Textarea } from 'flowbite-react';
+import { Button, Select, TextInput, Textarea, Drawer, Label } from 'flowbite-react';
 import rapportService from '../../services/rapportService';
 
 const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessages, setSelectedMessages }) => {
@@ -8,7 +8,6 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
   const [user, setUser] = useState();
   const [selectedMessages, setSelectedMessagesForm] = useState([]);
   const [description, setDescription] = useState();
-
 
   const handleCheckboxChange = (message) => {
     const isSelected = selectedMessages.some(selectedMessage => selectedMessage.content === message.content);
@@ -44,49 +43,43 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
     }
 
     const r = await rapportService.createRpport(report);
-    console.log(r)
-    console.log(description, user, selectedMessages, category)
-
-    // onSubmit({ category });
-    // onRequestClose();
   };
 
   return (
-    <Modal show={isOpen} onClose={onRequestClose}>
-      <Modal.Header>
-        Select Category
-      </Modal.Header>
-      <Modal.Body>
+    <Drawer open={isOpen} onClose={onRequestClose}>
+      <Drawer.Header title='Génère un rapport' titleIcon={() => <></>}></Drawer.Header>
+      <Drawer.Items>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-6 mt-3">
+            <Label htmlFor="user" className="mb-2 block">
+              Utilisateur
+            </Label>
             {user && (
               <TextInput
                 value={user.firstname}
                 disabled
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               />
             )}
-
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mt-4">
-              Category
-            </label>
+          </div>
+          <div className="mb-6">
+            <Label htmlFor="category" className="mb-2 block">
+              Catégorie
+            </Label>
             <Select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
-              <option value="normal">Normal</option>
-              <option value="urgent">Urgent</option>
-              <option value="tres urgent">Très Urgent</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Très urgent">Très Urgent</option>
             </Select>
-
-            {messages.length !== 0 && (
-              <div className="p-4">
-                <label htmlFor="messages" className="block text-sm font-medium text-gray-700 mt-4">
-                  Les Messages
-                </label>
+          </div>
+          {messages.length !== 0 && (
+              <div className="mb-6">
+                <Label htmlFor="messages" className="mb-2 block">
+                  Messages
+                </Label>
                 <div className="mt-1 block w-full max-h-40 overflow-y-auto border rounded-md">
                   {messages.map((message, index) => (
                     <div
@@ -110,19 +103,13 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
                   ))}
                 </div>
               </div>
-            )}
-
-            <div className="p-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          )}
+          <div className="mb-6">
+              <Label htmlFor="description" className="mb-2 block">
                 Description
-              </label>
-              <Textarea
-                onChange={(e) => setDescription(e.target.value)}
-                id="description"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              />
+              </Label>
+              <Textarea id="description" onChange={(e) => setDescription(e.target.value)} />
             </div>
-          </div>
           <div className="flex justify-end">
             <Button type="button" onClick={onRequestClose} color="gray" className="mr-2">
               Cancel
@@ -132,8 +119,8 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
             </Button>
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+      </Drawer.Items>
+    </Drawer>
   );
 };
 
