@@ -1,5 +1,8 @@
+import Message from '../models/Message.js';
 import ReportRepository from '../repository/reportRepository.js';
 import { buildPdf } from '../services/pdfkit.js';
+import MEssageRepository from '../repository/messageRepository.js';
+import messageRepository from '../repository/messageRepository.js';
 class ReportController {
 
     async getAllReports(req, res) {
@@ -38,14 +41,19 @@ class ReportController {
 
     async createReport(req, res) {
         try {
-            const { userId, title, description, category, status } = req.body;
+            const { userId, title, description, category, status, messages } = req.body;
             const newReport = await ReportRepository.createReport({ userId, title, description, category, status });
+            
+            await Promise.all(messages.map(async (message) => {
+              return  messageRepository.updateMessage(message.id, {reportId: newReport.id })
+            }));
+
             res.status(201).json(newReport);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+          console.error('Error creating report:', error);
+          res.status(500).json({ error: error.message });
         }
     }
-
 
 }
 

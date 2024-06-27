@@ -2,6 +2,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../config/database.js';
 import User from './user.js';
+import Message from './Message.js';
 
 class ReportModel extends Model {
 
@@ -43,10 +44,15 @@ ReportModel.init({
 });
 
 ReportModel.belongsTo(User, {
-  foreignKey: 'userId', // clé étrangère dans le modèle Report qui référence l'utilisateur
+  foreignKey: 'userId', 
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
   as: 'User',
+});
+
+ReportModel.hasMany(Message, {
+  foreignKey: 'reportId',
+  as: 'messages'
 });
 
 export default ReportModel;

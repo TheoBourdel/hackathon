@@ -13,7 +13,6 @@ const Chat = () => {
   const [userType, setUserType] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const room = 'global_room'; 
-
   const messagesEndRef = useRef(null);
 
   useEffect(() => {

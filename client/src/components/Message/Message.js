@@ -13,7 +13,6 @@ const Messages = () => {
   const [user, setUser] = useState();
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-  const [selectedMessages, setSelectedMessages] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,26 +27,12 @@ const Messages = () => {
     fetchUsers();
   }, []);
 
-  const handleFormSubmit = (formData) => {
-    console.log('Form submitted with category:', formData.category);
-  };
-
-  useEffect(() => {
-
-    if(selectedMessages.length !=0) {
-      console.log(selectedMessages)
-    }
-
-
-  }, [selectedMessages])
-
   const handleUserClick = async (userId) => {
     try {
       const userMessages = await userService.getUserMessages(userId);
       const user = await userService.getUser(userId);
 
       if(user && userMessages) {
-        console.log(user, userMessages)
         setUser(user)
         setMessages(userMessages);
         setIsUserSelectionned(false)
@@ -70,7 +55,7 @@ const Messages = () => {
             <Button type="submit" disabled={isUserSelectionned} className="bg-custom-orange" onClick={openModal} >Generer le rapport</Button>
         </div>
     </div>
-    <FormModal setSelectedMessages={setSelectedMessages} isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
+    <FormModal isOpen={modalIsOpen} onRequestClose={closeModal}  currentuser={user} currentMessages={messages} />
 
     <div className="flex h-screen">
       <div className="w-1/3 bg-gray-50 p-4 border-r">
