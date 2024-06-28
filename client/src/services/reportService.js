@@ -22,7 +22,9 @@ const getReports = async () => {
     }
   };
 
-export default {
+  const reportService = {
     createReport,
     getReports
-};
+  };
+
+  export default reportService;
