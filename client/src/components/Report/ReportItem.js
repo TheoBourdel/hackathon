@@ -26,7 +26,6 @@ function getBadgeColor(category) {
   }
 
 export default function ReportItem({ report }) {
-
     const downloadReport = async () => {
         try {
             const response = await fetch(`http://localhost:8000/api/report/${report.id}/pdf`);
@@ -50,7 +49,9 @@ export default function ReportItem({ report }) {
         </Table.Cell>
         <Table.Cell><Badge className='w-max' color={getBadgeColor(report.category)}>{report.category}</Badge></Table.Cell>
         <Table.Cell>{formatDateTime(report.date)}</Table.Cell>
+        <Table.Cell>{report.type === null ? 'N/R': report.type}</Table.Cell>
         <Table.Cell>{report.status}</Table.Cell>
+
         <Table.Cell>
             <Link className="font-medium text-cyan-600 hover:underline dark:text-cyan-500" onClick={downloadReport}>
                 DOCUMENT

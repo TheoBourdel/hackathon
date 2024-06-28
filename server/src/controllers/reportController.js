@@ -41,8 +41,8 @@ class ReportController {
 
     async createReport(req, res) {
         try {
-            const { userId, title, description, category, status, messages } = req.body;
-            const newReport = await ReportRepository.createReport({ userId, title, description, category, status });
+            const { userId, title, description, category, status, messages, type } = req.body;
+            const newReport = await ReportRepository.createReport({ userId, title, description, category, status, type });
             
             if (messages) {
                 await Promise.all(messages.map(async (message) => {

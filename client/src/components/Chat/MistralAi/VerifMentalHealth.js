@@ -16,7 +16,20 @@ async function VerifMentalHealth(message) {
       messages: [
         {
           role: 'system',
-          content: 'You are an AI trained to analyze text and categorize the mental state of the author into four categories: "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.) in french. Additionally, provide a brief description (in French, 255 characters max) of the mental state based on the following message. Structure the response as follows: Category : <category here> Practical "Description : <description here>"'
+          // content: `You are an AI trained to analyze text and categorize the mental state of the author into four categories: 
+          // "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.) 
+          // in french. Additionally, provide a brief description (in French, 255 characters max) of the mental state based on the following 
+          // message. Structure the response as follows: Category : <category here> Practical "Description : <description here>"`
+          content: `You are an AI trained to analyze text and categorize both the mental and physical state of the author into four categories:
+                    "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.)
+                    in french. Additionally, provide a brief description (in French, 255 characters max) of the mental or physical state based on 
+                    the following message. Structure the response as follows:
+                    Catégorie : <category here> 
+                    Description : <description here> 
+                    Type : <physique/psychologique>
+                    Detect if the problem is psychological (trauma, depression) by labeling it "psychologique," 
+                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique."`
+                          
         },
         { role: 'user', content: message }
       ],
@@ -26,16 +39,17 @@ async function VerifMentalHealth(message) {
 
     let category;
     let description = extractDescription(responseContent);
+    let type = extractType(responseContent)
 
     if (responseContent.includes('Très urgent')) {
       category = 'Très urgent';
-      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS" };
+      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type };
       const createdReport = await reportService.createReport(newReport);
       return { reportId: createdReport.id };
 
     } else if (responseContent.includes('Urgent')) {
       category = 'Urgent';
-      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS" };
+      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type };
       const createdReport = await reportService.createReport(newReport);
       return { reportId: createdReport.id};
 
@@ -59,6 +73,17 @@ function extractDescription(responseContent) {
   }
   return 'No specific description provided.';
 }
+
+function extractType(responseContent) {
+  const typeMarker = 'Type :';
+  const typeStart = responseContent.indexOf(typeMarker);
+
+  if (typeStart !== -1) {
+    return responseContent.substring(typeStart + typeMarker.length).trim();
+  }
+  return 'No specific Type provided.';
+}
+
 
 
 export default VerifMentalHealth;

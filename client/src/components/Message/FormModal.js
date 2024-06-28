@@ -8,6 +8,8 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
   const [user, setUser] = useState();
   const [selectedMessages, setSelectedMessagesForm] = useState([]);
   const [description, setDescription] = useState();
+  const [type, setType] = useState();
+
 
   const handleCheckboxChange = (message) => {
     const isSelected = selectedMessages.some(selectedMessage => selectedMessage.content === message.content);
@@ -38,10 +40,12 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
       description: description,
       category: category,
       status: "SMS",
-      messages: selectedMessages
+      messages: selectedMessages,
+      type: type
     }
 
-    await rapportService.createRpport(report);
+    const r = await rapportService.createRpport(report);
+    console.log(r)
     onRequestClose();
   };
 
@@ -104,6 +108,20 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
                 </div>
               </div>
           )}
+            <div className="mb-6">
+              <Label htmlFor="type" className="mb-2 block">
+                Type
+              </Label>
+              <Select
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              >
+                <option value="Physique">Physique</option>
+                <option value="Psychologique">Psychologique</option>
+              </Select>
+            </div>
           <div className="mb-6">
               <Label htmlFor="description" className="mb-2 block">
                 Description

@@ -37,7 +37,11 @@ ReportModel.init({
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   sequelize,
   modelName: 'Report',

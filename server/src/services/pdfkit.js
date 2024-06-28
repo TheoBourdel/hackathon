@@ -16,6 +16,7 @@ export function buildPdf(report, dataCallback, endCallback) {
     doc.moveDown();
     doc.fontSize(14).fillColor('black').text(`${formattedDate}`);
     doc.fontSize(14).text(`Source :  ${report.status}`);
+    doc.fontSize(14).text(`Type : ${report.type !== null ? report.type : 'N/R'}`);
     doc.fontSize(14).text(`Rapport ${report.category}`, {underline: true});
     doc.moveDown();
     doc.moveDown();

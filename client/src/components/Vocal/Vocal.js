@@ -101,7 +101,12 @@ const Vocal = () => {
         messages: [
           {
             role: 'system',
-            content: `Je vais te fournir un rapport d'émotion sous forme de chaîne de caractères. Ce rapport contient le nom de chaque émotion accompagné d'un score. En fonction des scores des émotions les plus élevés, j'aimerais que tu détermines si l'état émotionnel général est "nothing to report", "alarming state" ou "very alarming state". Je souhaite également que tu me fournisses une description détaillée de l'état mental de la personne basée sur ces émotions. Ne mentionne pas "alarming state" si tu détermines que c'est un "very alarming state".`
+            content: `Je vais te fournir un rapport d'émotion sous forme de chaîne de caractères. 
+            Ce rapport contient le nom de chaque émotion accompagné d'un score. En fonction des scores des émotions les plus élevés, 
+            j'aimerais que tu détermines si l'état émotionnel général est "nothing to report", "alarming state" ou "very alarming state". 
+            Je souhaite également que tu me fournisses une description détaillée de l'état mental de la personne basée sur ces émotions.
+             Ne mentionne pas "alarming state" si tu détermines que c'est un "very alarming state".
+            Tu dois également analyser et essayer de détecter si le problème est physique ou psychologique et me structurer la reponse dans ce format la: Type: <Physique / Psychologique> sans developper la repense.` 
           },
           { role: 'user', content: "Voici le rapport d'émotion : " + JSON.stringify(humeReport) }
         ],
@@ -110,16 +115,25 @@ const Vocal = () => {
     const responseContent = chatResponse.choices[0].message.content;
     console.log("Content: " + responseContent);
     let category;
+    let type;
+
+    if(responseContent.includes('Type: Physique')) {
+      type = 'Physique'
+    } else if(responseContent.includes('Type: Psychologique')) {
+      type = 'Psychologique'
+    } else{
+      type = 'N/R'
+    }
 
     if (responseContent.includes('very alarming state')) {
       category = 'Très urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "Audio" };
+      const newReport = { userId: 2, description: "Etat mentale du patient très urgent, nécessite une prise en charge", category: category, title: "Rapport du patient", status: "Audio", type };
       const createdReport = await reportService.createReport(newReport);
       return createdReport.id;
 
     } else if (responseContent.includes('alarming state')) {
       category = 'Urgent';
-      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "Audio" };
+      const newReport = { userId: 2, description: "Etat mentale du patient urgent, à surveiller", category: category, title: "Rapport du patient", status: "Audio", type };
       const createdReport = await reportService.createReport(newReport);
       return createdReport.id;
 

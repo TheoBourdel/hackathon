@@ -9,6 +9,7 @@ export default function ReportList({ reports }) {
             <Table.HeadCell>Nom / Prenom</Table.HeadCell>
             <Table.HeadCell>Catégorie</Table.HeadCell>
             <Table.HeadCell>Date</Table.HeadCell>
+            <Table.HeadCell>Type</Table.HeadCell>
             <Table.HeadCell>Source</Table.HeadCell>
             <Table.HeadCell>Rapport</Table.HeadCell>
         </Table.Head>
