@@ -6,7 +6,11 @@ import reportService from '../../services/reportService';
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
+<<<<<<< HEAD
   const [_,setResponse] = useState(null);
+=======
+  const [response, setResponse] = useState(null);
+>>>>>>> dev
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,8 +18,8 @@ const Vocal = () => {
     setFiles(e.target.files);
   };
   const uploadFiles = async (formData) => {
-    const url = process.env.REACT_APP_HUME_API_URL;
-    const apiKey = process.env.REACT_APP_HUME_API_KEY;
+    const url = "https://api.hume.ai/v0/batch/jobs";
+    const apiKey = "oJeRhCaUXpg18g2NZC0yKouNoOurmfoTXNkPSHFEnw9hi9dR";
 
     try {
       setLoading(true);
@@ -38,8 +42,8 @@ const Vocal = () => {
 
   const getPredictions = async (jobId) => {
     try {
-      const predictionsUrl = `${process.env.REACT_APP_HUME_API_URL}/${jobId}/predictions`;
-      const apiKey = process.env.REACT_APP_HUME_API_KEY;
+      const predictionsUrl = `https://api.hume.ai/v0/batch/jobs/${jobId}/predictions`;
+      const apiKey = "oJeRhCaUXpg18g2NZC0yKouNoOurmfoTXNkPSHFEnw9hi9dR";
 
       const predictions = await axios.get(predictionsUrl, {
         headers: {
@@ -104,6 +108,7 @@ const Vocal = () => {
     setLoading(false);
     const responseContent = await res.text();
     console.log("Content: " + responseContent);
+
     let category;
     let type;
 
