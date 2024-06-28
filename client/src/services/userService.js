@@ -31,8 +31,10 @@ const getUser = async (id) => {
   }
 };
 
-export default {
-    getUsers,
-    getUserMessages,
-    getUser
+const userService = {
+  getUsers,
+  getUserMessages,
+  getUser
 };
+
+export default userService;

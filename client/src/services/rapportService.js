@@ -12,6 +12,8 @@ const createRpport = async (report) => {
   };
   
 
-export default {
+const rapportService = {
     createRpport,
 };
+
+export default rapportService;

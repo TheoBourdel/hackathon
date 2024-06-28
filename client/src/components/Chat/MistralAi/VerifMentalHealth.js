@@ -2,7 +2,6 @@ import MistralClient from '@mistralai/mistralai';
 import reportService from '../../../services/reportService';
 import GetAdvice from './Advice';
 import io from 'socket.io-client';
-import messageService from '../../../services/messageService';
 
 const socket = io('http://localhost:8000'); 
 

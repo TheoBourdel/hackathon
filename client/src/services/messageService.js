@@ -22,7 +22,9 @@ const getMessages = async () => {
     }
   };
 
-export default {
+const messageService = {
   createMessage,
   getMessages
 };
+  
+export default messageService;

@@ -6,7 +6,7 @@ import reportService from '../../services/reportService';
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
-  const [response, setResponse] = useState(null);
+  const [setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
