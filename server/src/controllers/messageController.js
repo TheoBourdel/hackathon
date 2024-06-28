@@ -2,11 +2,13 @@ import MessageRepository from '../repository/messageRepository.js';
 
 class MessageController {
   async createMessage(req, res) {
-    try {
-      const message = await MessageRepository.createMessage(req.body);
-      res.status(201).json(message);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    if(req.body) {
+      try {
+        const message = await MessageRepository.createMessage(req.body);
+        res.status(201).json(message);
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 

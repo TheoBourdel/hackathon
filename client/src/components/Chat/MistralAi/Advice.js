@@ -1,8 +1,3 @@
-import MistralClient from '@mistralai/mistralai';
-
-const apiKey = 'Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a';
-const client = new MistralClient(apiKey);
-
 async function GetAdvice(message) {
   if (message.trim() === '') {
     alert('Please enter a message');
@@ -10,19 +5,17 @@ async function GetAdvice(message) {
   }
 
   try {
-    const chatResponse = await client.chat({
-      model: 'mistral-large-latest',
-      messages: [
-        {
-          role: 'system',
-          content: 'on a detecter ce message anormale,donne moi trois conseille pour ce probleme mentale (50 caratere max) :'+message
-        },
-        { role: 'user', content: message }
-      ],
+    const res = await fetch('http://localhost:8000/api/message-mistral-bot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        message
+      })
     });
-
-    const responseContent = chatResponse.choices[0].message.content;
-    console.log("Content: " + responseContent);
+    const responseContent = await res.text();
+    console.log("Content_______: " + responseContent);
     return responseContent;
 
   } catch (error) {

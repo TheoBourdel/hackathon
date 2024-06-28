@@ -33,19 +33,39 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const report = {
-      userId: user.id,
-      title: "Rapport de Performance",
-      description: description,
-      category: category,
-      status: "SMS",
-      messages: selectedMessages,
-      type: type
+    if(type == "Physique - Psychologique") {
+      const PhysiqueReport = {
+        userId: user.id,
+        title: "Rapport de Performance",
+        description: description,
+        category: category,
+        status: "SMS",
+        messages: selectedMessages,
+        type: "Physique"
+      }
+      const PsychologiqueReport = {
+        userId: user.id,
+        title: "Rapport de Performance",
+        description: description,
+        category: category,
+        status: "SMS",
+        messages: selectedMessages,
+        type: "Psychologique"
+      }
+      await rapportService.createRpport(PsychologiqueReport);
+      await rapportService.createRpport(PhysiqueReport);
+    } else {
+      const report = {
+        userId: user.id,
+        title: "Rapport de Performance",
+        description: description,
+        category: category,
+        status: "SMS",
+        messages: selectedMessages,
+        type: type
+      }
+      await rapportService.createRpport(report);
     }
-
-    const r = await rapportService.createRpport(report);
-    console.log(r)
     onRequestClose();
   };
 
@@ -120,6 +140,8 @@ const FormModal = ({ isOpen, onRequestClose, onSubmit, currentuser, currentMessa
               >
                 <option value="Physique">Physique</option>
                 <option value="Psychologique">Psychologique</option>
+                <option value="Physique - Psychologique">Physique - Psychologique</option>
+
               </Select>
             </div>
           <div className="mb-6">

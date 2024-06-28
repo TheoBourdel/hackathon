@@ -44,7 +44,7 @@ const Chat = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message && message.trim()) {
-      var newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: null };
+       var newMessage = { userId: userType === 'doctor' ? 1 : 2, content: message, reportId: null };
       socket.emit('message', newMessage);
       setMessage('');
 
@@ -55,7 +55,7 @@ const Chat = () => {
       }
 
       try {
-        await messageService.createMessage(newMessage);
+       await messageService.createMessage(newMessage);
       } catch (error) {
         console.error('Failed to send message', error);
       }

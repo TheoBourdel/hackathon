@@ -5,8 +5,30 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:8000'); 
 
-const apiKey = 'Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a';
+const apiKey = "Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a";
+console.log(apiKey);
+
+
 const client = new MistralClient(apiKey);
+
+
+const createReports = async (category, type, description) => {
+  if (type === "Physique - Psychologique") {
+    const physiqueReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type: "physique" };
+    const psychologiqueReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type: "psychologique" };
+
+    const [phisicalCreatedReport, psychologiqueCreatedReport] = await Promise.all([
+      reportService.createReport(physiqueReport),
+      reportService.createReport(psychologiqueReport)
+    ]);
+
+    return { reportId: phisicalCreatedReport.id };
+  } else {
+    const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type };
+    const createdReport = await reportService.createReport(newReport);
+    return { reportId: createdReport.id };
+  }
+};
 
 async function VerifMentalHealth(message, setMessages, messages) {
   if (message && message.trim() === '') {
@@ -15,50 +37,32 @@ async function VerifMentalHealth(message, setMessages, messages) {
   }
 
   try {
-    const chatResponse = await client.chat({
-      model: 'mistral-large-latest',
-      messages: [
-        {
-          role: 'system',
-          // content: `You are an AI trained to analyze text and categorize the mental state of the author into four categories: 
-          // "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.) 
-          // in french. Additionally, provide a brief description (in French, 255 characters max) of the mental state based on the following 
-          // message. Structure the response as follows: Category : <category here> Practical "Description : <description here>"`
-          content: `You are an AI trained to analyze text and categorize both the mental and physical state of the author into four categories:
-                    "Rien à signaler" (no issues detected), "Urgent" (depression, burnout, etc.), "Très urgent" (suicidal tendencies, etc.)
-                    in french. Additionally, provide a brief description (in French, 255 characters max) of the mental or physical state based on 
-                    the following message. Structure the response as follows:
-                    Catégorie : <category here> 
-                    Description : <description here> 
-                    Type : <physique/psychologique>
-                    Detect if the problem is psychological (trauma, depression) by labeling it "psychologique," 
-                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique."`
-                          
-        },
-        { role: 'user', content: message }
-      ],
+    const res = await fetch('http://localhost:8000/api/chat-mistral-bot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        message
+      })
     });
+    const responseContent = await res.text();
 
-    const responseContent = chatResponse.choices[0].message.content;
-    console.log("Content: " + responseContent);
+    console.log(responseContent)
     let category;
     let description = extractDescription(responseContent);
     let type = extractType(responseContent)
 
+    console.log(type)
+
     if (responseContent.includes('Très urgent')) {
       await giveAdvice(message, setMessages);
       category = 'Très urgent';
-      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type };
-      const createdReport = await reportService.createReport(newReport);
-      return { reportId: createdReport.id };
-
+      return await createReports(category, type, description);
     } else if (responseContent.includes('Urgent')) {
       await giveAdvice(message, setMessages);
       category = 'Urgent';
-      const newReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type };
-      const createdReport = await reportService.createReport(newReport);
-      return { reportId: createdReport.id };
-
+      return await createReports(category, type, description);
     } else if (responseContent.includes('Rien à signaler')) {
       category = 'Rien à signaler';
       return { reportId: null };
@@ -85,7 +89,9 @@ function extractType(responseContent) {
   const typeStart = responseContent.indexOf(typeMarker);
 
   if (typeStart !== -1) {
-    return responseContent.substring(typeStart + typeMarker.length).trim();
+    let type = responseContent.substring(typeStart + typeMarker.length).trim();
+    type = type.replace(/["}]/g, '').trim();
+    return type;
   }
   return 'No specific Type provided.';
 }

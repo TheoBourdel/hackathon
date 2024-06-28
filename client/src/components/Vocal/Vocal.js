@@ -6,15 +6,13 @@ import reportService from '../../services/reportService';
 
 const Vocal = () => {
   const [files, setFiles] = useState([]);
-  const [setResponse] = useState(null);
+  const [_,setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleFileChange = (e) => {
     setFiles(e.target.files);
   };
-  console.log(process.env.REACT_APP_HUME_API_URL)
-  console.log(process.env.REACT_APP_HUME_API_KEY)
   const uploadFiles = async (formData) => {
     const url = process.env.REACT_APP_HUME_API_URL;
     const apiKey = process.env.REACT_APP_HUME_API_KEY;
@@ -94,26 +92,17 @@ const Vocal = () => {
   };
 
   const verifyMentalHealth = async (humeReport) => {
-    const apiKey = process.env.REACT_APP_MISTRAL_API_KEY;
-    const client = new MistralClient(apiKey);
-
-    const chatResponse = await client.chat({
-        model: 'mistral-large-latest',
-        messages: [
-          {
-            role: 'system',
-            content: `Je vais te fournir un rapport d'émotion sous forme de chaîne de caractères. 
-            Ce rapport contient le nom de chaque émotion accompagné d'un score. En fonction des scores des émotions les plus élevés, 
-            j'aimerais que tu détermines si l'état émotionnel général est "nothing to report", "alarming state" ou "very alarming state". 
-            Je souhaite également que tu me fournisses une description détaillée de l'état mental de la personne basée sur ces émotions.
-             Ne mentionne pas "alarming state" si tu détermines que c'est un "very alarming state".
-            Tu dois également analyser et essayer de détecter si le problème est physique ou psychologique et me structurer la reponse dans ce format la: Type: <Physique / Psychologique> sans developper la repense.` 
-          },
-          { role: 'user', content: "Voici le rapport d'émotion : " + JSON.stringify(humeReport) }
-        ],
+    const res = await fetch('http://localhost:8000/api/vocal-mistral-bot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        humeReport
+      })
     });
     setLoading(false);
-    const responseContent = chatResponse.choices[0].message.content;
+    const responseContent = await res.text();
     console.log("Content: " + responseContent);
     let category;
     let type;
