@@ -60,7 +60,7 @@ const Messages = () => {
       </div>
       <FormModal isOpen={modalIsOpen} onRequestClose={closeModal} onSubmit={handleFormSubmit} currentuser={user} currentMessages={messages} />
 
-    <div className="flex-1 flex flex-row">
+    <div className="flex-1 flex flex-row overflow-scroll">
       <div className="w-1/3 p-4">
         <div className="user-list flex flex-col gap-4 justify-center">
           {users.map((user, index) => (

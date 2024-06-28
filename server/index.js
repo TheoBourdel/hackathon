@@ -32,10 +32,10 @@ app.post('/api/chat-mistral-bot', async (req, res) => {
                     in french. Additionally, provide a brief description (in French, 255 characters max) of the mental or physical state based on 
                     the following message. Structure the response as follows:
                     Catégorie : <category here> 
-                    Description : <description here> 
+                    Description : <description here> (150 characters max)
                     Type : <physique/psychologique or physique - psychologique>
                     Detect if the problem is psychological (trauma, depression) by labeling it "psychologique," 
-                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique." (250 caratere max)`
+                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique." (il faut que ca fasse absolument en dessous 250 caratere max)`
                           
         },
         
@@ -53,7 +53,6 @@ app.post('/api/chat-mistral-bot', async (req, res) => {
 app.post('/api/message-mistral-bot', async (req, res) => {
 
   try {
-  //   console.log("I'm here mother f**k")
     const messageResponse = await client.chat({
       model: 'mistral-large-latest',
       messages: [
