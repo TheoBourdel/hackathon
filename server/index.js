@@ -35,7 +35,7 @@ app.post('/api/chat-mistral-bot', async (req, res) => {
                     Description : <description here> 
                     Type : <physique/psychologique or physique - psychologique>
                     Detect if the problem is psychological (trauma, depression) by labeling it "psychologique," 
-                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique."`
+                    or if the problem is physical (broken bone, stomach ache) by labeling it "physique." (250 caratere max)`
                           
         },
         
@@ -85,7 +85,7 @@ app.post('/api/vocal-mistral-bot', async (req, res) => {
           j'aimerais que tu détermines si l'état émotionnel général est "nothing to report", "alarming state" ou "very alarming state". 
           Je souhaite également que tu me fournisses une description détaillée de l'état mental de la personne basée sur ces émotions.
            Ne mentionne pas "alarming state" si tu détermines que c'est un "very alarming state".
-          Tu dois également analyser et essayer de détecter si le problème est physique ou psychologique et me structurer la reponse dans ce format la: Type: <Physique / Psychologique> sans developper la repense.` 
+          Tu dois également analyser et essayer de détecter si le problème est physique ou psychologique et me structurer la reponse dans ce format la: Type: <Physique / Psychologique> sans developper la repense.(250 caratere max)` 
         },
         { role: 'user', content: "Voici le rapport d'émotion : " + JSON.stringify(req.body.humeReport) }
       ],
