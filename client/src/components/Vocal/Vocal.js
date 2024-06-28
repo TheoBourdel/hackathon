@@ -13,10 +13,11 @@ const Vocal = () => {
   const handleFileChange = (e) => {
     setFiles(e.target.files);
   };
-
+  console.log(process.env.REACT_APP_HUME_API_URL)
+  console.log(process.env.REACT_APP_HUME_API_KEY)
   const uploadFiles = async (formData) => {
-    const url = 'https://api.hume.ai/v0/batch/jobs';
-    const apiKey = 'oJeRhCaUXpg18g2NZC0yKouNoOurmfoTXNkPSHFEnw9hi9dR';
+    const url = process.env.REACT_APP_HUME_API_URL;
+    const apiKey = process.env.REACT_APP_HUME_API_KEY;
 
     try {
       setLoading(true);
@@ -39,8 +40,8 @@ const Vocal = () => {
 
   const getPredictions = async (jobId) => {
     try {
-      const predictionsUrl = `https://api.hume.ai/v0/batch/jobs/${jobId}/predictions`;
-      const apiKey = 'oJeRhCaUXpg18g2NZC0yKouNoOurmfoTXNkPSHFEnw9hi9dR';
+      const predictionsUrl = `${process.env.REACT_APP_HUME_API_URL}/${jobId}/predictions`;
+      const apiKey = process.env.REACT_APP_HUME_API_KEY;
 
       const predictions = await axios.get(predictionsUrl, {
         headers: {
@@ -93,7 +94,7 @@ const Vocal = () => {
   };
 
   const verifyMentalHealth = async (humeReport) => {
-    const apiKey = 'Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a';
+    const apiKey = process.env.REACT_APP_MISTRAL_API_KEY;
     const client = new MistralClient(apiKey);
 
     const chatResponse = await client.chat({
