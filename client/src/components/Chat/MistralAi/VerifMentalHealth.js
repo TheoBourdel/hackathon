@@ -5,13 +5,6 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:8000'); 
 
-const apiKey = "Jb1Pf2nx0UVg9DPXQVi70wFTiTguJP2a";
-console.log(apiKey);
-
-
-const client = new MistralClient(apiKey);
-
-
 const createReports = async (category, type, description) => {
   if (type === "Physique - Psychologique") {
     const physiqueReport = { userId: 2, description: description, category: category, title: "Rapport du patient", status: "SMS", type: "physique" };
@@ -47,13 +40,9 @@ async function VerifMentalHealth(message, setMessages, messages) {
       })
     });
     const responseContent = await res.text();
-
-    console.log(responseContent)
     let category;
     let description = extractDescription(responseContent);
     let type = extractType(responseContent)
-
-    console.log(type)
 
     if (responseContent.includes('Très urgent')) {
       await giveAdvice(message, setMessages);
@@ -96,10 +85,9 @@ function extractType(responseContent) {
   return 'No specific Type provided.';
 }
 
-
 async function giveAdvice(message, setMessages) {
   const advice = await GetAdvice(message);
-  const urgentMessage = { userId: 1, content: `AI Generated: \n ${advice}`, reportId: null };
+  const urgentMessage = { userId: 1, content: `Généré par une IA: ${advice}`, reportId: null };
   socket.emit('message', urgentMessage);
   try {
 

@@ -51,7 +51,7 @@ const Chat = () => {
       let userInfo;
       if (userType !== 'doctor') {
         userInfo = await VerifMentalHealth(message);
-        newMessage.reportId = userInfo.reportId;
+        newMessage.reportId = userInfo?.reportId;
       }
 
       try {

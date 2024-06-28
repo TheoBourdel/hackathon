@@ -15,11 +15,29 @@ async function GetAdvice(message) {
       })
     });
     const responseContent = await res.text();
-    console.log("Content_______: " + responseContent);
-    return responseContent;
+    const data = parseMessage(responseContent)
+    return data;
 
   } catch (error) {
     console.error('Error:', error);
+  }
+}
+
+function parseMessage(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+
+    if (data.message) {
+      const steps = data.message.split('\n');
+      const parsedSteps = steps.map(step => step.trim());
+
+      return parsedSteps;
+    } else {
+      throw new Error("The provided JSON does not contain a 'message' key.");
+    }
+  } catch (error) {
+    console.error("Failed to parse the message:", error);
+    return null;
   }
 }
 
