@@ -13,7 +13,7 @@
 - TheoBourdel : Théo
 
 # Install
-1 - `docker compose build`
-2 - `docker compose up`
-3 - `docker compose exec client sh` & `npm i`
-4 - `docker compose exec server sh` & `npm i` & `cd src` & `npx sequelize-cli db:migrate`
+1- `docker compose build`
+2- `docker compose up`
+3- `docker compose exec client sh` & `npm i`
+4- `docker compose exec server sh` & `npm i` & `cd src` & `npx sequelize-cli db:migrate`
