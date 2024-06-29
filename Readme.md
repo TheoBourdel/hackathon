@@ -6,6 +6,13 @@
 - Gestion des rapports (CRUD, PDF) - Théo & Marouane
 - Gestion de la liste des message par utilisateurs - Marouane
 
+# Authors
+- marouaneTalbi : Marouane
+- Amilcar-afk : Amilcar
+- acherigui1 : Amine
+- TheoBourdel : Théo
+
+# Install
 
 # Lancer le client & le server
 
