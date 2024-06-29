@@ -1,3 +1,12 @@
+# Features
+- Détection de problème physique & psychologique (SMS) - Amilcar
+- Envoi de conseilles par SMS si un problème a été détecté - Amine
+- Chat en temps réel - Marouane
+- Détection des émotions dans un audio - Théo
+- Gestion des rapports (CRUD, PDF) - Théo & Marouane
+- Gestion de la liste des message par utilisateurs - Marouane
+
+
 # Lancer le client & le server
 
 `docker compose up`
