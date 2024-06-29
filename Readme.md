@@ -13,18 +13,7 @@
 - TheoBourdel : Théo
 
 # Install
-
-# Lancer le client & le server
-
-`docker compose up`
-
-# Jouer les migrations
-
-`docker compose exec server sh`
-`cd src`
-`npx sequelize-cli db:migrate`
-
-# Mettre à jour les dépendances
-
-`docker compose exec client sh`
-`npm i`
+1 - `docker compose build`
+2 - `docker compose up`
+3 - `docker compose exec client sh` & `npm i`
+4 - `docker compose exec server sh` & `npm i` & `cd src` & `npx sequelize-cli db:migrate`
