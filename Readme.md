@@ -13,7 +13,10 @@
 - TheoBourdel : Théo
 
 # Install
-1. `docker compose build`
-2. `docker compose up`
-3. `docker compose exec client sh` & `npm i`
-4. `docker compose exec server sh` & `npm i` & `cd src` & `npx sequelize-cli db:migrate`
+1. `git clone https://github.com/TheoBourdel/hackathon.git`
+2. `cd hackathon`
+3. `docker compose build`
+4. `docker compose up`
+5. `docker compose exec client sh` & `npm i`
+6. `docker compose exec server sh` & `npm i` & `cd src` & `npx sequelize-cli db:migrate`
+7. restart docker compose and it's done !
