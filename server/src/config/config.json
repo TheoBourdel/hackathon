@@ -3,7 +3,7 @@
     "username": "root",
     "password": "esgi",
     "database": "hackathon",
-    "host": "127.0.0.1",
+    "host": "db",
     "dialect": "postgres"
   },
   "test": {

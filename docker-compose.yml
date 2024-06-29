@@ -15,11 +15,7 @@ services:
     ports:
       - 3000:3000
     stdin_open: true
-    volumes:
-    - ./client:/app 
     tty: true
-    depends_on:
-      - server
 
   db:
     image: postgres:latest
